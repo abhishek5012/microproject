@@ -1,0 +1,43 @@
+conversion the hexadecimal to decimal or vice versa
+
+
+LDA 2005h
+MVI D,00h
+MVI H,09h
+MVI B,0Ah
+MOV C,D
+MOV L,D
+CPI 64h
+JC Refer
+CPI C8h
+JC Loop
+MVI L,02h
+JMP Refer
+Loop: MVI L,01h
+Refer: MOV E,A
+MOV C,A
+Back: MOV A,E
+CMP H
+JC Skip
+JZ Skip
+MOV A,C
+DAA
+MOV C,A
+INR D
+MOV A,E
+SUB B
+MOV E,A
+JMP Back
+Skip: MOV A,D
+STA 200Eh
+MOV A,L
+STA 2000h
+LDA 2005h
+CPI FAh
+JC Next
+MOV A,C
+SBI 40h
+MOV C,A
+Next: MOV A,C
+STA 2001h
+HLT
